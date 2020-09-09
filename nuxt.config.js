@@ -1,4 +1,5 @@
 module.exports = {
+  telemetry: false,
   mode: 'spa',
   server: {
     host: process.env.BASE_URL || '0.0.0.0',
@@ -13,7 +14,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap' }
     ]
   },
   loading: {

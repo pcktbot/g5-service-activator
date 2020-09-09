@@ -5,7 +5,7 @@ $theme-colors: (
   'tertiary': #e8513e,
   'quaternary': #eee23e,
 );
-
+$font-family-base: 'Comic Neue', cursive;
 $enable-rounded: true;
 $enable-shadows: false;
 $enable-gradients: false;
@@ -17,5 +17,6 @@ $body-bg: RGBA(242, 242, 242, 1.00);
 // BOOTSTRAP VARIABLES DECLARED ABOVE
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';
-
+@import 'vue-multiselect/dist/vue-multiselect.min.css';
+@import 'vue-multiselect-listbox/dist/vue-multi-select-listbox.css';
 // OVERRIDES BELOW
