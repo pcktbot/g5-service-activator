@@ -45,7 +45,8 @@ module.exports = {
   ],
   bootstrapVue: {
     bootstrapCSS: false,
-    bootstrapVueCSS: false
+    bootstrapVueCSS: false,
+    icons: true
   },
   axios: {
     browserBaseURL: `//${process.env.BROWSER_URL}`
