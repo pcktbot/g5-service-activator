@@ -7,7 +7,8 @@ module.exports = (sequelize) => sequelize.define('store', {
       primaryKey: true
     },
     client_id: {
-      type: INTEGER
+      type: INTEGER,
+      allowNull: true
     },
     position: {
       type: INTEGER
@@ -52,13 +53,16 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: STRING(20)
     },
     latitude: {
-      type: DECIMAL(12, 8) 
+      type: DECIMAL(12, 8),
+      allowNull: true
     },
     longitude: {
-      type: DECIMAL(12, 8) 
+      type: DECIMAL(12, 8),
+      allowNull: true
     },
     magnification: {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     created_on: {
       type: DATE
@@ -82,7 +86,8 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: INTEGER(11)
     },
     special_id : {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     secondary_email : {
       type: TEXT
@@ -94,10 +99,12 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: INTEGER(11)
     },
     report_area_id : {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     report_region_id : {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     show_on_website : {
       type: BOOLEAN
@@ -124,7 +131,8 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: DATE
     },
     logo_file_size : {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     facility_page_link : {
       type: STRING
@@ -139,7 +147,7 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: STRING(40)
     },
     client_site_id : {
-      type: STRING(255)
+      type: STRING
     },
     comments_count : {
       type: INTEGER(11)
@@ -157,7 +165,8 @@ module.exports = (sequelize) => sequelize.define('store', {
       type: INTEGER(11)
     },
     mobile_special_id : {
-      type: INTEGER(11)
+      type: INTEGER(11),
+      allowNull: true
     },
     google_conversion_label : {
       type: STRING
