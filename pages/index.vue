@@ -1,16 +1,18 @@
 <template>
-  <div >
-    <transition name="slide-fade" appear>
-      <octopus :size="`5em`" />
-    </transition>
+  <div>
+    <primary-nav />
   </div>
 </template>
 
 <script>
-import Octopus from '~/components/icons/octopus'
+import PrimaryNav from '~/components/primary-nav'
 export default {
   components: {
-    Octopus
+    PrimaryNav
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

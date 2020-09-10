@@ -1,4 +1,5 @@
 module.exports = {
+  telemetry: false,
   mode: 'spa',
   server: {
     host: process.env.BASE_URL || '0.0.0.0',
@@ -6,34 +7,23 @@ module.exports = {
   },
   serverMiddleware: [],
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Service Activator',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap' }
     ]
   },
-  loading: {
-    color: '#7898ad',
-    failedColor: '#ff0033',
-    continuous: true,
-    throttle: 300,
-    duration: 2000,
-    height: '4px'
-  },
-  loadingIndicator: {
-    name: 'three-bounce',
-    color: '#21222e',
-    background: '#f2f2f2'
-  },
+  loading: '@/components/loading.vue',
+  loadingIndicator: '@/static/loading.html',
   css: [
     '@/assets/theme.scss',
     '@/assets/transitions.scss'
   ],
-  // TODO could this be set to a function that returns an array of paths to each file in the plugins directory?
   plugins: [
   ],
   buildModules: [
