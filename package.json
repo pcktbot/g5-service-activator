@@ -32,7 +32,8 @@
     "pg": "^7.18.2",
     "sequelize": "^5.22.3",
     "vue-multiselect": "^2.1.6",
-    "vue-multiselect-listbox": "0.0.20"
+    "vue-multiselect-listbox": "0.0.20",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
