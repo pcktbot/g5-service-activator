@@ -6,13 +6,13 @@ $theme-colors: (
   'quaternary': #eee23e,
 );
 $font-family-base: 'Comic Neue', cursive;
-$enable-rounded: true;
+$enable-rounded: false;
 $enable-shadows: false;
 $enable-gradients: false;
 $enable-transitions: true;
 $enable-print-styles: true;
 $bv-enable-table-stacked: true;
-$body-bg: RGBA(242, 242, 242, 1.00);
+$body-bg: #4c679d;
 
 // BOOTSTRAP VARIABLES DECLARED ABOVE
 @import 'bootstrap/scss/bootstrap.scss';

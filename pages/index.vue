@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h1 class="text-center font-weight-bold">
-      This is Fine!
-    </h1>
+    <primary-nav />
   </div>
 </template>
 
 <script>
-export default {}
+import PrimaryNav from '~/components/primary-nav'
+export default {
+  components: {
+    PrimaryNav
+  }
+}
 </script>
 
 <style lang="scss" scoped>
