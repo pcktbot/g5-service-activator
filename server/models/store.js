@@ -1,7 +1,6 @@
 const { INTEGER, STRING, JSONB, BOOLEAN, DATEONLY, TEXT, DECIMAL, DATE } = require('sequelize')
 
-module.exports = (sequelize) => {
-  const annotation = sequelize.define('store', {
+module.exports = (sequelize) => sequelize.define('store', {
     id: {
       type: INTEGER,
       autoIncrement: true,
@@ -181,6 +180,4 @@ module.exports = (sequelize) => {
     hub_status : {
       type: STRING
     }
-  })
-  return annotation
-}
+  }, { timestamps: false })

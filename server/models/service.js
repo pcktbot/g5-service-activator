@@ -81,4 +81,4 @@ module.exports = (sequelize) => sequelize.define('service', {
     status_change : {
       type: STRING
     }
-  })
+  },{ timestamps: false })
