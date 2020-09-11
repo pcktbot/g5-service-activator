@@ -11,6 +11,7 @@
       >
         <b-btn
           :to="section.path"
+          :disabled="section.disabled"
           variant="primary"
           block
           class="px-5 py-3 text-left"
@@ -40,19 +41,22 @@ export default {
           id: 'create-client',
           text: 'Create New Client',
           path: '/new/client',
-          icon: 'plus'
+          icon: 'plus',
+          disabled: false
         },
         {
           id: 'create-locations',
           text: 'Bulk Create Locations',
           path: '/new/locations',
-          icon: 'building'
+          icon: 'building',
+          disabled: false
         },
         {
           id: 'services',
           text: 'Bulk Update Services',
           path: '/update/services',
-          icon: 'briefcase'
+          icon: 'briefcase',
+          disabled: true
         }
       ]
     }

@@ -1,98 +1,25 @@
 <template>
-  <div>
-    <b-form @submit.stop.prevent="onSubmit">
-      <b-form-group id="client-name" label="Client Name" label-for="client-name">
-        <b-form-input
-          id="client-name"
-          name="client-name"
-          v-model="$v.form.name.$model"
-          :state="validateState('name')"
-          aria-describedby="client-name-feedback"
-        ></b-form-input>
-
-        <b-form-invalid-feedback id="client-name-feedback">
-          This is a required field and must be at least 3 characters.
-        </b-form-invalid-feedback>
-      </b-form-group>
-
-      <b-form-group id="example-input-group-2" label="Food" label-for="example-input-2">
-        <b-form-select
-          id="example-input-2"
-          name="example-input-2"
-          v-model="$v.form.food.$model"
-          :options="foods"
-          :state="validateState('food')"
-          aria-describedby="input-2-live-feedback"
-        ></b-form-select>
-
-        <b-form-invalid-feedback id="input-2-live-feedback">This is a required field.</b-form-invalid-feedback>
-      </b-form-group>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button class="ml-2" @click="resetForm()">Reset</b-button>
-    </b-form>
+  <div class="centered">
+    Content
   </div>
 </template>
 
-<style>
-body {
-  padding: 1rem
-}
-</style>
-
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
-
+import Papa from 'papaparse'
 export default {
-  mixins: [validationMixin],
   data() {
     return {
-      foods: [
-        { value: null, text: 'Choose...' },
-        { value: 'apple', text: 'Apple' },
-        { value: 'orange', text: 'Orange' }
-      ],
-      form: {
-        name: null,
-        food: null
-      }
-    }
-  },
-  validations: {
-    form: {
-      food: {
-        required
-      },
-      name: {
-        required,
-        minLength: minLength(3)
-      }
+      clientId: this.$route.query.clientId
     }
   },
   methods: {
-    validateState(name) {
-      const { $dirty, $error } = this.$v.form[name]
-      return $dirty ? !$error : null
-    },
-    resetForm() {
-      this.form = {
-        name: null,
-        food: null
-      }
-
-      this.$nextTick(() => {
-        this.$v.$reset()
-      })
-    },
-    onSubmit() {
-      this.$v.form.$touch()
-      if (this.$v.form.$anyError) {
-        return
-      }
-
-      alert('Form submitted!')
+    unparse() {
+      Papa.unparse()
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

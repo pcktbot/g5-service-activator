@@ -1,6 +1,7 @@
 
 $theme-colors: (
   'primary': #0b233f,
+  'primary-1': #19356a,
   'secondary': #339698,
   'tertiary': #e8513e,
   'quaternary': #eee23e,
@@ -28,7 +29,7 @@ $body-bg: #4c679d;
   max-width: 90vw;
   &__back-btn {
     position: absolute;
-    transform: translate(-50%, -75%);
+    transform: translate(-75%, -50%);
     z-index: 10;
     background: #0c223c;
   }

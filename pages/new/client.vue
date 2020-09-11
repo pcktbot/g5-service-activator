@@ -6,12 +6,13 @@
       pill
       variant="outline-secondary"
     >
-      <b-icon-arrow-left />
+      <b-icon-house-fill />
     </b-btn>
     <b-card
       bg-variant="primary"
       text-variant="white"
       header-tag="h1"
+      header-class="font-weight-bold border-0"
       class="better-card"
       style="min-width: 500px;"
     >
@@ -47,6 +48,7 @@
           <b-form-datepicker
             v-model="$v.form.contractSignedDate.$model"
             :state="validateState('contractSignedDate')"
+            today-button
             class="better-input"
             aria-describedby="contract-date-feedback"
           />
@@ -70,7 +72,7 @@
             class="better-input"
           />
           <b-form-invalid-feedback id="locations-available-feedback" class="better-invalid mt-3">
-            This cannot be left blank.
+            This cannot be left blank or less than zero.
           </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group v-bind="formGroup" label="Contract Type">
@@ -96,11 +98,15 @@
           </b-form-invalid-feedback>
         </b-form-group>
 
-        <b-btn>
+        <b-btn @click="onSubmit">
           Save
-          <b-spinner v-model="isBusy" small />
+          <b-icon-arrow-clockwise :animation="isBusy ? 'spin' : ''" />
         </b-btn>
-        <b-btn variant="tertiary">
+        <b-btn
+          v-if="isBusy"
+          to="/new/locations"
+          variant="outline-tertiary"
+        >
           Add Some Locations
           <b-icon-arrow-right />
         </b-btn>
@@ -120,7 +126,7 @@ export default {
       formGroup: {
         labelClass: [
           'badge',
-          'badge-secondary',
+          'badge-primary-1',
           'w-50',
           'text-left',
           'text-white',
@@ -151,7 +157,7 @@ export default {
       form: {
         name: null,
         vertical: 'Multifamily',
-        contractSignedDate: '',
+        contractSignedDate: null,
         size: 'Standard',
         locationsAvailable: 0,
         contractType: null,
@@ -191,9 +197,12 @@ export default {
       return $dirty ? !$error : null
     },
     onReset() {
+      this.$$nextTick(() => {
+        this.$v.reset()
+      })
     },
     onSubmit() {
-      alert('Form Submitted!')
+      this.isBusy = !this.isBusy
     }
   }
 }
@@ -210,6 +219,9 @@ export default {
   border-radius: 0.75em;
   background-color: #dee7ed;
   transition: all 200ms linear;
+  &.is-invalid {
+    border-color: #de0333;
+  }
   &:focus {
     box-shadow: 0 0 0 2px #82c9c9,
                 0 0.625em 0 0 #1e5353;
@@ -218,9 +230,11 @@ export default {
     transform: scale(1.05);
   }
 }
+
 .better-invalid {
   font-size: 90%;
   font-weight: 700;
   color: #e00033;
+  text-align: right;
 }
 </style>
