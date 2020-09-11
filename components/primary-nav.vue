@@ -7,8 +7,15 @@
       <b-list-group-item
         v-for="section in sections"
         :key="section.id"
-        class="p-0"
+        class="p-0 list-anchor"
       >
+        <b-badge
+          v-if="section.disabled"
+          variant="tertiary"
+          class="list-anchor__badge"
+        >
+          Coming Soon!
+        </b-badge>
         <b-btn
           :to="section.path"
           :disabled="section.disabled"
@@ -75,6 +82,17 @@ export default {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -100%);
+  }
+}
+.list-anchor {
+  position: relative;
+  &__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, 25%);
+    z-index: 11;
+    // box-shadow: 0 2px 10px rgba(12, 34, 60, 1.00);
   }
 }
 </style>
