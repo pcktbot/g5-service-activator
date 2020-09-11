@@ -1,13 +1,6 @@
 <template>
   <div class="centered">
-    <b-btn
-      class="centered__back-btn"
-      to="/"
-      pill
-      variant="outline-secondary"
-    >
-      <b-icon-house-fill />
-    </b-btn>
+    <home-button />
     <b-card
       bg-variant="primary"
       text-variant="white"
@@ -98,7 +91,7 @@
           </b-form-invalid-feedback>
         </b-form-group>
 
-        <b-btn @click="onSubmit">
+        <b-btn class="better-btn" @click="onSubmit">
           Save
           <b-icon-arrow-clockwise :animation="isBusy ? 'spin' : ''" />
         </b-btn>
@@ -118,7 +111,9 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength, minValue, numeric } from 'vuelidate/lib/validators'
+import HomeButton from '~/components/home-button'
 export default {
+  components: { HomeButton },
   mixins: [validationMixin],
   data() {
     return {
