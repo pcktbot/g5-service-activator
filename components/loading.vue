@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="centered">
+  <div v-if="loading" class="loading-centered">
     <div class="fire">
       <div class="flames">
         <div class="flame" />
@@ -8,23 +8,14 @@
         <div class="flame" />
       </div>
     </div>
-    <dumpster v-bind="icon" />
   </div>
 </template>
 
 <script>
-import Dumpster from '~/components/icons/dumpster'
 export default {
-  components: {
-    Dumpster
-  },
   data() {
     return {
-      loading: false,
-      icon: {
-        size: '10em',
-        color: '#ee4f3d'
-      }
+      loading: false
     }
   },
   methods: {
@@ -39,11 +30,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.centered {
+.loading-centered {
   position: fixed;
   top: 50%;
   right: 50%;
   transform: translate(-50%, -50%);
+  z-index: 12;
 }
 // https://codepen.io/z-/pen/JXVpgp
 $yellow: #FFDC01;

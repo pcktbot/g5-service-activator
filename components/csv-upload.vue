@@ -6,7 +6,7 @@
       @input="parseCsv"
     >
       <template v-slot:file-name="{ names }">
-        <b-badge variant="secondary">
+        <b-badge variant="secondary" style="position: absolute;">
           {{ names[0] }}
         </b-badge>
       </template>
@@ -26,12 +26,8 @@ export default {
     parseCsv() {
       Papa.parse(this.file, {
         header: true,
-        complete(res) {
-          // const i = this.parsed.length
-          // const headers = res.meta.fields
-          // const locations = res.data.map()
-          // send away
-          this.$emit('parsed-locations', res)
+        complete: (res) => {
+          this.$emit('on-parsed', res)
         }
       })
     }
@@ -41,7 +37,7 @@ export default {
 
 <style lang="scss">
 .custom-file-label {
-  border: 3px dashed #82c9c9;
+  border: 3px solid #82c9c9;
   &::after {
     border: 3px solid #339698;
     background-color: #339698;
