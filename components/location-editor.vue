@@ -5,6 +5,7 @@
         v-model.trim="$v.form.name.$model"
         :state="validateState('name')"
         class="better-input"
+        @input="onUpdate"
       />
       <validation-errors v-bind="{ id: 'name-input-feedback', validations: $v.form.name }" />
     </b-form-group>
@@ -13,6 +14,7 @@
         v-model.trim="$v.form.address.$model"
         :state="validateState('address')"
         class="better-input"
+        @input="onUpdate"
       />
       <validation-errors v-bind="{ id: 'address-input-feedback', validations: $v.form.address }" />
     </b-form-group>
@@ -22,6 +24,7 @@
           v-model="$v.form.city.$model"
           :state="validateState('city')"
           class="better-input"
+          @input="onUpdate"
         />
         <validation-errors v-bind="{ id: 'city-input-feedback', validations: $v.form.city }" />
       </b-form-group>
@@ -30,6 +33,7 @@
           v-model="form.state"
           :options="states"
           class="better-input"
+          @input="onUpdate"
         />
       </b-form-group>
       <b-form-group label="Zip Code">
@@ -38,6 +42,7 @@
           :state="validateState('zip')"
           type="number"
           class="better-input"
+          @input="onUpdate"
         />
         <validation-errors v-bind="{ id: 'zip-feedback', validations: $v.form.zip }" />
       </b-form-group>
@@ -48,6 +53,7 @@
           v-model="form.timezone"
           :options="timezones"
           class="better-input"
+          @input="onUpdate"
         />
       </b-form-group>
       <b-form-group label="Call Tracking" class="mr-2">
@@ -55,6 +61,7 @@
           v-model="form.callTracking"
           :options="callTrackings"
           class="better-input"
+          @input="onUpdate"
         />
       </b-form-group>
       <b-form-group label="DA Approved Budget" class="mr-5">
@@ -64,6 +71,7 @@
             :state="validateState('budget')"
             type="number"
             class="better-input"
+            @input="onUpdate"
           />
           <validation-errors v-bind="{ id: 'budget-feedback', validations: $v.form.budget }" />
         </b-input-group>
@@ -71,7 +79,8 @@
       <b-btn
         :id="`drop-${i}-btn`"
         variant="outline-tertiary"
-        class="align-self-end"
+        class="align-self-center"
+        size="sm"
         @click="onDrop"
       >
         <b-icon-trash />

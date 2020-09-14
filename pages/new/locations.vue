@@ -79,6 +79,7 @@ export default {
     onUpdate(evt) {
       // update this.locations
       this.$emit('received-update', evt)
+      this.locations[evt.i] = evt.location
     },
     onDrop(evt) {
       this.$emit('received-drop', evt)
