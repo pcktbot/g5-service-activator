@@ -3,7 +3,7 @@
     <home-button />
     <b-card
       bg-variant="primary"
-      class="location-card"
+      class="better-card"
       header-text-variant="white"
       header-class="font-weight-bold border-0"
     >
@@ -13,8 +13,7 @@
         </h2>
         <b-input-group
           prepend="Select a Client"
-          class="flex-nowrap"
-          prepend-class="bg-primary text-white"
+          class="flex-nowrap bg-primary text-white"
         >
           <vue-multiselect
             v-model="client"
@@ -34,7 +33,11 @@
               :class="i % 2 === 0 ? 'bg-primary' : 'bg-primary-1'"
               class="text-white"
             >
-              <location-editor :location="location" />
+              <location-editor
+                v-bind="{ location, i }"
+                @drop-location="onDrop"
+                @update-location="onUpdate"
+              />
             </b-list-group-item>
           </b-list-group>
         </div>
@@ -75,6 +78,10 @@ export default {
     },
     onUpdate(evt) {
       // update this.locations
+      this.$emit('received-update', evt)
+    },
+    onDrop(evt) {
+      this.$emit('received-drop', evt)
     },
     onSubmit() {
       this.isBusy = true
@@ -94,8 +101,7 @@ export default {
   max-height: 60vh;
   overflow-y: scroll;
 }
-.location-card {
-  box-shadow: -0.75em -0.75em 0.75em 0.25em rgba(254, 184, 0, 0.5),
-              0.75em 0.75em 0.75em 0.25em rgba(251, 0, 30, 0.5);
+.multiselect__tags {
+  border: 2px solid #339698;
 }
 </style>

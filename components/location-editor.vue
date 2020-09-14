@@ -4,6 +4,7 @@
       <b-form-input
         v-model.trim="$v.form.name.$model"
         :state="validateState('name')"
+        class="better-input"
       />
       <validation-errors v-bind="{ id: 'name-input-feedback', validations: $v.form.name }" />
     </b-form-group>
@@ -11,46 +12,70 @@
       <b-form-input
         v-model.trim="$v.form.address.$model"
         :state="validateState('address')"
+        class="better-input"
       />
       <validation-errors v-bind="{ id: 'address-input-feedback', validations: $v.form.address }" />
     </b-form-group>
     <b-form-row>
-      <b-form-group label="City">
+      <b-form-group label="City" class="mr-2">
         <b-form-input
           v-model="$v.form.city.$model"
           :state="validateState('city')"
+          class="better-input"
         />
         <validation-errors v-bind="{ id: 'city-input-feedback', validations: $v.form.city }" />
       </b-form-group>
-      <b-form-group label="State">
-        <b-form-select v-model="form.state" :options="states" />
+      <b-form-group label="State" class="mr-2">
+        <b-form-select
+          v-model="form.state"
+          :options="states"
+          class="better-input"
+        />
       </b-form-group>
       <b-form-group label="Zip Code">
         <b-form-input
           v-model="$v.form.zip.$model"
           :state="validateState('zip')"
           type="number"
+          class="better-input"
         />
         <validation-errors v-bind="{ id: 'zip-feedback', validations: $v.form.zip }" />
       </b-form-group>
     </b-form-row>
     <b-form-row>
-      <b-form-group label="Timezone">
-        <b-form-select v-model="form.timezone" :options="timezones" />
+      <b-form-group label="Timezone" class="mr-2">
+        <b-form-select
+          v-model="form.timezone"
+          :options="timezones"
+          class="better-input"
+        />
       </b-form-group>
-      <b-form-group label="Call Tracking">
-        <b-form-select v-model="form.callTracking" :options="callTrackings" />
+      <b-form-group label="Call Tracking" class="mr-2">
+        <b-form-select
+          v-model="form.callTracking"
+          :options="callTrackings"
+          class="better-input"
+        />
       </b-form-group>
-      <b-form-group label="DA Approved Budget">
+      <b-form-group label="DA Approved Budget" class="mr-5">
         <b-input-group prepend="$">
           <b-form-input
             v-model="$v.form.budget.$model"
             :state="validateState('budget')"
             type="number"
+            class="better-input"
           />
           <validation-errors v-bind="{ id: 'budget-feedback', validations: $v.form.budget }" />
         </b-input-group>
       </b-form-group>
+      <b-btn
+        :id="`drop-${i}-btn`"
+        variant="outline-tertiary"
+        class="align-self-end"
+        @click="onDrop"
+      >
+        <b-icon-trash />
+      </b-btn>
     </b-form-row>
   </b-form>
 </template>
@@ -69,6 +94,10 @@ export default {
   components: { ValidationErrors },
   mixins: [validationMixin],
   props: {
+    i: {
+      type: Number,
+      default: 0
+    },
     location: {
       type: Object,
       default() {
@@ -166,11 +195,30 @@ export default {
       const { $dirty, $error } = this.$v.form[name]
       return $dirty ? !$error : null
     },
-    onUpdate() {}
+    onUpdate() {
+      this.$emit('update-location', {
+        i: this.i,
+        location: this.form
+      })
+    },
+    onDrop() {
+      this.$emit('drop-location', {
+        i: this.i
+      })
+    }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.input-group-text {
+  border-color: #339698;
+  background-color: #82c9c9;
+  color: #0c223c;
+  border-radius: 0.75em;
+}
+.input-group > .form-control:not(:last-child) {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+}
 </style>
