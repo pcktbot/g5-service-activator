@@ -151,6 +151,7 @@ export default {
       ],
       form: {
         name: null,
+        brandedName: null,
         vertical: 'Multifamily',
         contractSignedDate: null,
         size: 'Standard',
