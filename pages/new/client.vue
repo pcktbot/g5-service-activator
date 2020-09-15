@@ -110,7 +110,12 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength, minValue, numeric } from 'vuelidate/lib/validators'
+import {
+  required,
+  minLength,
+  minValue,
+  numeric
+} from 'vuelidate/lib/validators'
 import HomeButton from '~/components/home-button'
 export default {
   components: { HomeButton },
@@ -120,14 +125,14 @@ export default {
       isBusy: true,
       formGroup: {
         labelClass: [
-          'badge',
-          'badge-primary-1',
-          'w-50',
-          'text-left',
-          'text-white',
-          'py-1',
-          'pl-2',
-          'ml-3'
+          // 'badge',
+          // 'badge-primary-1',
+          // 'w-50',
+          // 'text-left',
+          'text-white'
+          // 'py-1',
+          // 'pl-2',
+          // 'ml-3'
         ]
       },
       verticals: [
@@ -198,7 +203,13 @@ export default {
       })
     },
     onSubmit() {
-      this.isBusy = !this.isBusy
+      this.isBusy = true
+      this.$v.form.$touch()
+      if (this.$v.form.$anyError) {
+        this.isBusy = false
+        return
+      }
+
       this.$axios
         .$post('/api/v1/clients', {
           client_name: this.form.name,
@@ -212,34 +223,15 @@ export default {
           search_analyst_id: 13959
           // fields
         })
+        .finally(() => {
+          this.isBusy = false
+        })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.better-card {
-  border-radius: 0.5em;
-  box-shadow: 0 0 2em rgba(12, 34, 60, 1.00),
-              0 0.5em 5em rgba(30, 83, 83, 1.00);
-}
-.better-input {
-  border: 2px solid #82c9c9;
-  border-radius: 0.75em;
-  background-color: #dee7ed;
-  transition: all 200ms linear;
-  &.is-invalid {
-    border-color: #de0333;
-  }
-  &:focus {
-    box-shadow: 0 0 0 2px #82c9c9,
-                0 0.625em 0 0 #1e5353;
-    border-color: #339698;
-    background-color: #fff;
-    transform: scale(1.05);
-  }
-}
-
 .better-invalid {
   font-size: 90%;
   font-weight: 700;
