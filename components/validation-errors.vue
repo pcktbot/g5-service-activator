@@ -4,7 +4,7 @@
       v-for="rule in rules"
       :key="rule"
     >
-      {{ validations[rule] ? traverseValidations(rule) : '' }}
+      {{ validations[rule] }}
     </div>
   </b-form-invalid-feedback>
 </template>

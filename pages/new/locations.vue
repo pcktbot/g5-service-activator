@@ -5,11 +5,10 @@
       bg-variant="primary"
       class="better-card"
       header-text-variant="white"
-      header-class="font-weight-bold border-0"
     >
       <template v-slot:header>
-        <h2 class="text-center">
-          Let's Add Some Locations!
+        <h2 class="text-center font-weight-bold border-0">
+          Let's Upload Some Locations!
         </h2>
         <b-input-group
           prepend="Select a Client"
@@ -25,19 +24,20 @@
       </template>
       <b-card-body class="py-0 px-2" style="overflow: hidden;">
         <csv-file-upload v-show="showUpload" @on-parsed="onParsed" />
-        <div class="scroll-container">
+        <div class="scroll-container border border-secondary">
           <b-list-group v-if="locations.length > 0" flush>
             <b-list-group-item
               v-for="(location, i) in locations"
               :key="`location-${i}`"
-              :class="i % 2 === 0 ? 'bg-primary' : 'bg-primary-1'"
-              class="text-white"
+              :class="location.isError ? 'tertiary' : i % 2 === 0 ? 'bg-primary-2' : 'bg-primary'"
+              class="text-white border-bottom border-secondary"
             >
               <location-editor
                 v-bind="{ location, i }"
                 @drop-location="onDrop"
                 @update-location="onUpdate"
               />
+              {{ location.isError }}
             </b-list-group-item>
           </b-list-group>
         </div>
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     onParsed(res) {
-      this.locations = res.data
+      this.locations = res.data.map(r => ({ ...r, isError: false }))
       this.showUpload = false
     },
     onUpdate(evt) {
@@ -83,9 +83,15 @@ export default {
     },
     onDrop(evt) {
       this.$emit('received-drop', evt)
+      this.locations.splice(evt.i, 1)
     },
     onSubmit() {
       this.isBusy = true
+      const anyError = this.locations.filter(l => !l.isError)
+      if (anyError.length > 0) {
+        this.isBusy = false
+        return
+      }
       // this.locations is an Array of locations
       this.$axios
         .$post('', { ...this.locations })
@@ -101,6 +107,7 @@ export default {
 .scroll-container {
   max-height: 60vh;
   overflow-y: scroll;
+  border-radius: 0.75em;
 }
 .multiselect__tags {
   border: 2px solid #339698;

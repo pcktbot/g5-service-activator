@@ -125,14 +125,14 @@ export default {
       isBusy: true,
       formGroup: {
         labelClass: [
-          'badge',
-          'badge-primary-1',
-          'w-50',
-          'text-left',
-          'text-white',
-          'py-1',
-          'pl-2',
-          'ml-3'
+          // 'badge',
+          // 'badge-primary-1',
+          // 'w-50',
+          // 'text-left',
+          'text-white'
+          // 'py-1',
+          // 'pl-2',
+          // 'ml-3'
         ]
       },
       verticals: [
@@ -203,10 +203,19 @@ export default {
       })
     },
     onSubmit() {
-      this.isBusy = !this.isBusy
+      this.isBusy = true
+      this.$v.form.$touch()
+      if (this.$v.form.$anyError) {
+        this.isBusy = false
+        return
+      }
+
       this.$axios
         .$post('', {
           // fields
+        })
+        .finally(() => {
+          this.isBusy = false
         })
     }
   }

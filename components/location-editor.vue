@@ -1,5 +1,8 @@
 <template>
-  <b-form @submit.stop.prevent="onUpdate">
+  <b-form
+    style="position: relative;"
+    @submit.stop.prevent="onUpdate"
+  >
     <b-form-group label="Name">
       <b-form-input
         v-model.trim="$v.form.name.$model"
@@ -84,6 +87,7 @@
         @click="onDrop"
       >
         <b-icon-trash />
+        Remove Location
       </b-btn>
     </b-form-row>
   </b-form>
@@ -179,11 +183,13 @@ export default {
       },
       address: {
         required,
-        minLength: minLength(5)
+        minLength: minLength(5),
+        maxLength: maxLength(255)
       },
       city: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(3),
+        maxLength: maxLength(255)
       },
       zip: {
         required,
@@ -199,6 +205,12 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$v.$touch()
+    if (this.$v.form.$anyError) {
+      this.onUpdate()
+    }
+  },
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.$v.form[name]
@@ -207,7 +219,8 @@ export default {
     onUpdate() {
       this.$emit('update-location', {
         i: this.i,
-        location: this.form
+        location: this.form,
+        isError: this.$v.form.$anyError
       })
     },
     onDrop() {
