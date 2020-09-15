@@ -37,6 +37,10 @@
               <location-editor :location="location" />
             </b-list-group-item>
           </b-list-group>
+          <b-btn class="better-btn" @click="onSubmit">
+          Save
+          <b-icon-arrow-clockwise :animation="isBusy ? 'spin' : ''" />
+        </b-btn>
         </div>
       </b-card-body>
     </b-card>
@@ -80,7 +84,7 @@ export default {
       this.isBusy = true
       // this.locations is an Array of locations
       this.$axios
-        .$post('', { ...this.locations })
+        .$post(`/api/v1/clients/${this.client.id}/stores`, this.locations)
         .finally(() => {
           this.isBusy = false
         })

@@ -200,7 +200,16 @@ export default {
     onSubmit() {
       this.isBusy = !this.isBusy
       this.$axios
-        .$post('', {
+        .$post('/api/v1/clients', {
+          client_name: this.form.name,
+          branded_name: this.form.brandedName ? this.form.brandedName : this.form.name,
+          industry_id: 6,
+          contract_signed_date: this.form.contractSignedDate,
+          locations_available: this.form.locationsAvailable,
+          general_risk_status: 'Green',
+          contract_type: this.form.contractType,
+          strategic_class: this.form.size,
+          search_analyst_id: 13959
           // fields
         })
     }
