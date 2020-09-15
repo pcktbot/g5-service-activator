@@ -1,8 +1,10 @@
 require('dotenv').config()
 const express = require('express')
+const bodyParser = require('body-parser')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
+app.use(bodyParser.json({ limit: '1000kb' }))
 const models = require('./models')
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'

@@ -69,8 +69,8 @@ Object.keys(db)
     }
   })
 
-require('./prototypes')(db)
-require('./hooks')(db)
+require('./prototypes')(db, Sequelize, sequelize)
+require('./hooks')(db, Sequelize, sequelize)
 
 module.exports = {
   ...db,

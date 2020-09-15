@@ -3,7 +3,8 @@ const { INTEGER, STRING, JSONB, BOOLEAN, DATEONLY, TEXT, DECIMAL, DATE } = requi
 module.exports = (sequelize) => sequelize.define('client', {
     id: {
       type: INTEGER(11),
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     industry_id: {
       type: INTEGER
