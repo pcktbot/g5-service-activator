@@ -33,8 +33,9 @@
       </b-form-group>
       <b-form-group label="State" class="mr-2">
         <b-form-select
-          v-model="form.state"
+          v-model="$v.form.state.$model"
           :options="states"
+          :state="validateState('state')"
           class="better-input"
           @input="onUpdate"
         />
@@ -130,6 +131,7 @@ export default {
   data() {
     return {
       callTrackings: [
+        { text: 'Select an option', value: null },
         { text: 'None', value: 1 },
         { text: '1 Number/Location', value: 2 },
         { text: '5 Numbers/Location', value: 3 },
@@ -140,7 +142,68 @@ export default {
         { text: 'Default 2500', value: 11 },
         { text: 'Default 0', value: 12 }
       ],
-      states: ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY'],
+      states: [
+        { text: 'Select a state', value: null },
+        'Alabama',
+        'Alaska',
+        'American Samoa',
+        'Arizona',
+        'Arkansas',
+        'California',
+        'Colorado',
+        'Connecticut',
+        'Delaware',
+        'District of Columbia',
+        'Federated States of Micronesia',
+        'Florida',
+        'Georgia',
+        'Guam',
+        'Hawaii',
+        'Idaho',
+        'Illinois',
+        'Indiana',
+        'Iowa',
+        'Kansas',
+        'Kentucky',
+        'Louisiana',
+        'Maine',
+        'Marshall Islands',
+        'Maryland',
+        'Massachusetts',
+        'Michigan',
+        'Minnesota',
+        'Mississippi',
+        'Missouri',
+        'Montana',
+        'Nebraska',
+        'Nevada',
+        'New Hampshire',
+        'New Jersey',
+        'New Mexico',
+        'New York',
+        'North Carolina',
+        'North Dakota',
+        'Northern Mariana Islands',
+        'Ohio',
+        'Oklahoma',
+        'Oregon',
+        'Palau',
+        'Pennsylvania',
+        'Puerto Rico',
+        'Rhode Island',
+        'South Carolina',
+        'South Dakota',
+        'Tennessee',
+        'Texas',
+        'Utah',
+        'Vermont',
+        'Virgin Island',
+        'Virginia',
+        'Washington',
+        'West Virginia',
+        'Wisconsin',
+        'Wyoming'
+      ],
       timezones: [
         {
           text: 'Alaska Standard Time',
@@ -190,6 +253,9 @@ export default {
         required,
         minLength: minLength(3),
         maxLength: maxLength(255)
+      },
+      state: {
+        required
       },
       zip: {
         required,

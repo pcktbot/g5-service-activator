@@ -5,6 +5,7 @@
       bg-variant="primary"
       class="better-card"
       header-text-variant="white"
+      footer-class="border-0"
     >
       <template v-slot:header>
         <h2 class="text-center font-weight-bold border-0">
@@ -15,49 +16,50 @@
           class="flex-nowrap bg-primary text-white"
         >
           <vue-multiselect
-            v-model="client"
+            v-model="$v.form.client.$model"
             :options="clients"
+            :state="validateState('client')"
             :custom-label="c => c.branded_name ? c.branded_name : c.name"
-            placeholder="Select Option"
+            placeholder="Search"
           />
         </b-input-group>
       </template>
       <b-card-body class="py-0 px-2" style="overflow: hidden;">
-        <csv-file-upload v-show="showUpload" @on-parsed="onParsed" />
-        <div class="scroll-container border border-secondary">
-          <b-list-group v-if="locations.length > 0" flush>
-            <b-list-group-item
-              v-for="(location, i) in locations"
-              :key="`location-${i}`"
-              :class="location.isError ? 'tertiary' : i % 2 === 0 ? 'bg-primary-2' : 'bg-primary'"
-              class="text-white border-bottom border-secondary"
-            >
-              <location-editor
-                v-bind="{ location, i }"
-                @drop-location="onDrop"
-                @update-location="onUpdate"
-              />
-              {{ location.isError }}
-            </b-list-group-item>
-          </b-list-group>
-        </div>
+        <csv-file-upload @on-parsed="onParsed" />
       </b-card-body>
+      <template v-slot:footer>
+        <b-btn
+          :disabled="showUpload"
+          class="better-btn"
+          @click="onSubmit"
+        >
+          Save
+          <b-icon-arrow-clockwise :animation="isBusy ? 'spin' : ''" />
+        </b-btn>
+        <b-btn variant="outline-tertiary">
+          Add Services
+          <b-icon-arrow-right />
+        </b-btn>
+      </template>
     </b-card>
   </div>
 </template>
 
 <script>
 import VueMultiselect from 'vue-multiselect'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import HomeButton from '~/components/home-button'
 import CsvFileUpload from '~/components/csv-upload'
-import LocationEditor from '~/components/location-editor'
+// import LocationEditor from '~/components/location-editor'
 export default {
   components: {
-    LocationEditor,
+    // LocationEditor,
     VueMultiselect,
     HomeButton,
     CsvFileUpload
   },
+  mixins: [validationMixin],
   async asyncData({ $axios }) {
     return {
       clients: await $axios.$get('api/v1/clients')
@@ -71,9 +73,20 @@ export default {
       isBusy: false
     }
   },
+  validations: {
+    form: {
+      client: {
+        required
+      }
+    }
+  },
   methods: {
+    validateState(name) {
+      const { $dirty, $error } = this.$v.form[name]
+      return $dirty ? !$error : null
+    },
     onParsed(res) {
-      this.locations = res.data.map(r => ({ ...r, isError: false }))
+      this.locations = res
       this.showUpload = false
     },
     onUpdate(evt) {
@@ -94,7 +107,7 @@ export default {
       }
       // this.locations is an Array of locations
       this.$axios
-        .$post('', { ...this.locations })
+        .$post('api/v1/clients', { ...this.locations })
         .finally(() => {
           this.isBusy = false
         })
