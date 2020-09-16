@@ -16,6 +16,7 @@ module.exports = (app) => {
   app.post('/api/v1/clients/:id/stores', async (req, res) => {
     const { body } = req
     const { id } = req.params
+    console.log(body)
     models.sequelize.transaction(async (t) => {
       if (Array.isArray(body)) {
         body.forEach(location => {
