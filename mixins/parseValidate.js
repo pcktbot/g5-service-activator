@@ -31,35 +31,23 @@ export default {
     }
   },
   methods: {
+    checkColRules(rules, row, key) {
+      return rules.every(rule => validator[rule.rule](row.data[key], rule.options) === rule.expected)
+    },
+    checkRowRules(keys, row) {
+      return keys.every(key => this.rules[key] ? this.checkColRules(this.rules[key], row, key) : true)
+    },
     parseCsv(file) {
       Papa.parse(file, {
         header: true,
         worker: true,
         step: (row) => {
           const keys = Object.keys(row.data)
-          if (this.keysLength === null) {
+          if (!this.keysLength) {
             this.keysLength = keys.length
           }
           if (this.keysLength === keys.length) {
-            for (let i = 0; i < keys.length; i++) {
-              let result = true
-              const key = keys[i]
-              this.$emit('key', { key, rules: this.rules[key] })
-              if (this.rules[key]) {
-                result = this.rules[key].every((rule) => {
-                  const test = validator[rule.rule](row.data[key], rule.options)
-                  this.$emit('every', { rule, test, row: row.data })
-                  return test === rule.expected
-                })
-                if (!result) {
-                  this.review.push(row.data)
-                  break
-                }
-              }
-              if (result) {
-                this.keep.push(row.data)
-              }
-            }
+            this.checkRowRules(keys, row) ? this.keep.push(row.data) : this.review.push(row.data)
           }
         }
       })
