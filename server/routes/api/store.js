@@ -1,4 +1,3 @@
-const { mode } = require("../../../nuxt.config")
 const models = require("../../models")
 
 module.exports = (app) => {
