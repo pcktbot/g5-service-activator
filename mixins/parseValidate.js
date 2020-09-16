@@ -74,6 +74,7 @@ export default {
         worker: true,
         step: (row) => {
           row.data.timezone = this.lookup(row.data.Zip_Postal_Code__c)
+          row.data.callTracking = null
           const keys = Object.keys(row.data)
           if (this.keysLength === null) {
             this.keysLength = keys.length

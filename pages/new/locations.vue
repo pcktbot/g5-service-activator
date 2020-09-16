@@ -26,6 +26,16 @@
       </template>
       <b-card-body class="py-0 px-2" style="overflow: hidden;">
         <csv-file-upload @on-parsed="onParsed" />
+        <b-list-group v-if="locations.review">
+          <b-list-group-item
+            v-for="(location, i) in locations.review"
+            :key="`location-${i}`"
+            :class="i % 2 === 0 ? 'bg-primary' : 'bg-primary-1'"
+            class="text-white"
+          >
+            <location-editor v-bind="{ i, location }" />
+          </b-list-group-item>
+        </b-list-group>
       </b-card-body>
       <template v-slot:footer>
         <b-btn
@@ -51,10 +61,10 @@ import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import HomeButton from '~/components/home-button'
 import CsvFileUpload from '~/components/csv-upload'
-// import LocationEditor from '~/components/location-editor'
+import LocationEditor from '~/components/location-editor'
 export default {
   components: {
-    // LocationEditor,
+    LocationEditor,
     VueMultiselect,
     HomeButton,
     CsvFileUpload

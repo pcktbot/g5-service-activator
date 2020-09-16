@@ -116,12 +116,12 @@ export default {
       type: Object,
       default() {
         return {
-          name: null,
-          budget: null,
-          address: null,
-          city: null,
-          state: null,
-          zip: null,
+          Name: null,
+          Digital_Advertising_Budget__c: null,
+          Address__c: null,
+          City__c: null,
+          State_Province__c: null,
+          Zip_Postal_Code__c: null,
           timezone: null,
           callTracking: null
         }
@@ -234,7 +234,16 @@ export default {
   },
   computed: {
     form() {
-      return this.location
+      return {
+        name: this.location.Name,
+        address: this.location.Address__c,
+        city: this.location.City__c,
+        state: this.location.State_Province__c,
+        zip: this.location.Zip_Postal_Code__c,
+        budget: this.location.Digital_Advertising_Budget__c,
+        timezone: this.location.timezone,
+        callTracking: this.location.callTracking
+      }
     }
   },
   validations: {
@@ -260,13 +269,10 @@ export default {
       zip: {
         required,
         numeric,
-        minValue: minValue(0),
-        minLength: minLength(5),
-        maxLength: maxLength(5)
+        minLength: minLength(5)
       },
       budget: {
         required,
-        numeric,
         minValue: minValue(0)
       }
     }
