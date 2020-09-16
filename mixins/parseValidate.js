@@ -59,6 +59,12 @@ export default {
     }
   },
   methods: {
+    checkColRules(rules, row, key) {
+      return rules.every(rule => validator[rule.rule](row.data[key], rule.options) === rule.expected)
+    },
+    checkRowRules(keys, row) {
+      return keys.every(key => this.rules[key] ? this.checkColRules(this.rules[key], row, key) : true)
+    },
     lookup(zipcode) {
       if (Object.prototype.hasOwnProperty.call(zipcodes, zipcode)) {
         const timezoneIndex = zipcodes[zipcode]
@@ -76,27 +82,11 @@ export default {
           row.data.timezone = this.lookup(row.data.Zip_Postal_Code__c)
           row.data.callTracking = null
           const keys = Object.keys(row.data)
-          if (this.keysLength === null) {
+          if (!this.keysLength) {
             this.keysLength = keys.length
           }
           if (this.keysLength === keys.length) {
-            for (let i = 0; i < keys.length; i++) {
-              let result = true
-              const key = keys[i]
-              if (this.rules[key]) {
-                result = this.rules[key].every((rule) => {
-                  const test = validator[rule.rule](row.data[key], rule.options)
-                  return test === rule.expected
-                })
-                if (!result) {
-                  this.review.push(row.data)
-                  break
-                }
-              }
-              if (result) {
-                this.keep.push(row.data)
-              }
-            }
+            this.checkRowRules(keys, row) ? this.keep.push(row.data) : this.review.push(row.data)
           }
         },
         complete: () => {
