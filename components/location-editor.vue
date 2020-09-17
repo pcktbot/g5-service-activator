@@ -88,6 +88,7 @@
           class="px-5"
           @click="onFinish"
         >
+          <b-icon-check />
           Ready
         </b-btn>
         <b-btn
@@ -296,22 +297,10 @@ export default {
       this.$emit('finish-location', {
         i: this.i,
         location: this.form
-        // location: {
-        //   Name: this.form.name,
-        //   Digital_Advertising_Budget__c: this.form.budget,
-        //   Address__c: this.form.address,
-        //   City__c: this.form.city,
-        //   State_Province__c: this.form.state,
-        //   Zip_Postal_Code__c: this.form.zip,
-        //   timezone: this.form.timezone,
-        //   callTracking: this.form.callTracking
-        // }
       })
     },
     onDrop() {
-      this.$emit('drop-location', {
-        i: this.i
-      })
+      this.$emit('drop-location', { i: this.i })
     }
   }
 }

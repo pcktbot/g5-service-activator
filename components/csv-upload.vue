@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <b-form-file
-      v-model="file"
-      accept="text/csv"
-      @input="parseCsv(file)"
-    >
-      <template v-slot:file-name="{ names }">
-        <b-badge variant="secondary" style="position: absolute;">
-          {{ names[0] }}
-        </b-badge>
-      </template>
-    </b-form-file>
-  </div>
+  <b-form-file
+    v-model="file"
+    accept="text/csv"
+    @input="parseCsv(file)"
+  >
+    <template v-slot:file-name="{ names }">
+      <b-badge variant="secondary" style="position: absolute;">
+        {{ names[0] }}
+      </b-badge>
+    </template>
+  </b-form-file>
 </template>
 
 <script>

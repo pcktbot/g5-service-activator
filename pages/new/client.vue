@@ -5,7 +5,7 @@
       bg-variant="primary"
       text-variant="white"
       header-tag="h1"
-      header-class="font-weight-bold border-0"
+      header-class="font-weight-bold border-0 text-center"
       class="better-card"
       style="min-width: 500px;"
     >
@@ -14,8 +14,9 @@
       </template>
       <b-form
         name="new-client"
+        class="px-1"
+        style="overflow-y: scroll;"
         @submit.stop.prevent="onSubmit"
-        @reset="onReset"
       >
         <b-form-group v-bind="formGroup" label="Client Name">
           <b-form-input
@@ -23,12 +24,12 @@
             :state="validateState('name')"
             placeholder="Enter Client's Name"
             aria-describedby="client-name-feedback"
-            autofocus
             class="better-input"
           />
-          <b-form-invalid-feedback id="client-name-feedback" class="better-invalid mt-3">
-            Client Name must be at least 5 characters.
-          </b-form-invalid-feedback>
+          <validation-feedback
+            :id="`client-name-feedback`"
+            :validations="$v.form.name"
+          />
         </b-form-group>
         <b-form-group v-bind="formGroup" label="Vertical">
           <b-form-select
@@ -45,11 +46,12 @@
             class="better-input"
             aria-describedby="contract-date-feedback"
           />
-          <b-form-invalid-feedback id="contract-date-feedback" class="better-invalid mt-3">
-            This cannot be left blank.
-          </b-form-invalid-feedback>
+          <validation-feedback
+            :id="`contract-date-feedback`"
+            :validations="$v.form.contractSignedDate"
+          />
         </b-form-group>
-        <b-form-group v-bind="formGroup" label="Size (Premier)">
+        <b-form-group v-bind="formGroup" label="Size">
           <b-form-select
             v-model="form.size"
             :options="sizes"
@@ -64,9 +66,10 @@
             type="number"
             class="better-input"
           />
-          <b-form-invalid-feedback id="locations-available-feedback" class="better-invalid mt-3">
-            This cannot be left blank or less than zero.
-          </b-form-invalid-feedback>
+          <validation-feedback
+            :id="`locations-available-feedback`"
+            :validations="$v.form.locationsAvailable"
+          />
         </b-form-group>
         <b-form-group v-bind="formGroup" label="Contract Type">
           <b-form-select
@@ -75,9 +78,10 @@
             :state="validateState('contractType')"
             class="better-input"
           />
-          <b-form-invalid-feedback id="contract-type-feedback" class="better-invalid mt-3">
-            This cannot be left blank.
-          </b-form-invalid-feedback>
+          <validation-feedback
+            :id="`contract-type-feedback`"
+            :validations="$v.form.contractType"
+          />
         </b-form-group>
         <b-form-group v-bind="formGroup" label="DA Assignment">
           <b-form-select
@@ -86,18 +90,23 @@
             :state="validateState('daAssignment')"
             class="better-input"
           />
-          <b-form-invalid-feedback id="da-assignment-feedback" class="better-invalid mt-3">
-            This cannot be left blank.
-          </b-form-invalid-feedback>
+          <validation-feedback
+            :id="`da-assignment-feedback`"
+            :validations="$v.form.daAssignment"
+          />
         </b-form-group>
-
-        <b-btn class="better-btn" @click="onSubmit">
+        <b-btn
+          :disabled="$v.form.$anyError"
+          class="better-btn"
+          @click="onSubmit"
+        >
           Save
-          <b-icon-arrow-clockwise :animation="isBusy ? 'spin' : ''" />
+          <b-icon-check-circle v-if="clientId" />
+          <b-icon-arrow-clockwise v-else :animation="isBusy ? 'spin' : ''" />
         </b-btn>
         <b-btn
-          v-if="isBusy"
-          to="/new/locations"
+          v-if="clientId"
+          :to="`/new/locations?clientId=${clientId}`"
           variant="outline-tertiary"
         >
           Add Some Locations
@@ -112,37 +121,44 @@
 import { validationMixin } from 'vuelidate'
 import {
   required,
-  minLength,
+  maxLength,
   minValue,
   numeric
 } from 'vuelidate/lib/validators'
 import HomeButton from '~/components/home-button'
+import ValidationFeedback from '~/components/validation-errors'
 export default {
-  components: { HomeButton },
+  components: { HomeButton, ValidationFeedback },
   mixins: [validationMixin],
+  async asyncData({ $axios }) {
+    return {
+      daAssignments: [
+        { text: 'Select Someone', value: null },
+        ...await $axios
+          .$get('api/v1/users/da')
+          .then(res => res.map(r => ({ text: r.name, value: r.id })))
+          .catch(() => ({ text: 'There was an error.', value: 0 }))
+      ]
+    }
+  },
   data() {
     return {
-      isBusy: true,
+      isBusy: false,
+      clientId: null,
       formGroup: {
-        labelClass: [
-          // 'badge',
-          // 'badge-primary-1',
-          // 'w-50',
-          // 'text-left',
-          'text-white'
-          // 'py-1',
-          // 'pl-2',
-          // 'ml-3'
-        ]
+        labelClass: ['text-white']
       },
       verticals: [
-        'Multifamily',
-        'Self Storage',
-        'Senior Living'
+        { text: 'Select Vertical', value: null },
+        { text: 'Multifamily', value: 6 },
+        { text: 'Self Storage', value: 1 },
+        { text: 'Senior Living', value: 5 },
+        { text: 'Other', value: 0 }
       ],
       sizes: [
+        { text: 'Select Size', value: null },
         'Standard',
-        'SMB'
+        { text: 'SMB', value: 'NSO' }
       ],
       contractTypes: [
         { text: 'Select a Contract Type', value: null },
@@ -150,16 +166,11 @@ export default {
         'Month to Month',
         'Other'
       ],
-      daAssignments: [
-        { text: 'Select Someone', value: null },
-        { text: 'Adam Gorecki', value: 13959 }
-      ],
       form: {
         name: null,
-        brandedName: null,
-        vertical: 'Multifamily',
+        vertical: null,
         contractSignedDate: null,
-        size: 'Standard',
+        size: null,
         locationsAvailable: 0,
         contractType: null,
         daAssignment: null,
@@ -171,7 +182,7 @@ export default {
     form: {
       name: {
         required,
-        minLength: minLength(5)
+        maxLength: maxLength(255)
       },
       vertical: {
         required
@@ -198,6 +209,13 @@ export default {
       return $dirty ? !$error : null
     },
     onReset() {
+      this.name = null
+      this.vertical = null
+      this.contractSignedDate = null
+      this.size = null
+      this.locationsAvailable = 0
+      this.contractType = null
+      this.daAssignment = null
       this.$$nextTick(() => {
         this.$v.reset()
       })
@@ -213,29 +231,23 @@ export default {
       this.$axios
         .$post('/api/v1/clients', {
           client_name: this.form.name,
-          branded_name: this.form.brandedName ? this.form.brandedName : this.form.name,
-          industry_id: 6,
+          branded_name: this.form.name,
+          industry_id: this.form.vertical,
           contract_signed_date: this.form.contractSignedDate,
           locations_available: this.form.locationsAvailable,
-          general_risk_status: 'Green',
+          general_risk_status: this.form.riskLevel,
           contract_type: this.form.contractType,
           strategic_class: this.form.size,
-          search_analyst_id: 13959
-          // fields
+          search_analyst_id: this.form.daAssignment
+        })
+        .then((res) => {
+          this.clientId = res.id
         })
         .finally(() => {
+          this.onReset()
           this.isBusy = false
         })
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.better-invalid {
-  font-size: 90%;
-  font-weight: 700;
-  color: #e00033;
-  text-align: right;
-}
-</style>

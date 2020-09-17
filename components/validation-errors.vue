@@ -1,9 +1,6 @@
 <template>
   <b-form-invalid-feedback :id="id" class="better-invalid mt-3">
-    <div
-      v-for="rule in rules"
-      :key="rule"
-    >
+    <div v-for="rule in rules" :key="rule">
       {{ validations[rule] ? '' : text(rule) }}
     </div>
   </b-form-invalid-feedback>
@@ -18,13 +15,7 @@ export default {
     },
     validations: {
       type: Object,
-      default() {
-        return {
-          $model: '',
-          required: true,
-          numeric: false
-        }
-      }
+      required: true
     }
   },
   computed: {
