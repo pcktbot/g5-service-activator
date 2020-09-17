@@ -5,91 +5,99 @@
   >
     <b-form-group label="Name">
       <b-form-input
-        v-model.trim="$v.form.name.$model"
-        :state="validateState('name')"
+        v-model.trim="$v.form.Name.$model"
+        :state="validateState('Name')"
         class="better-input"
-        @input="onUpdate"
       />
-      <validation-errors v-bind="{ id: 'name-input-feedback', validations: $v.form.name }" />
+      <validation-errors v-bind="{ id: 'name-input-feedback', validations: $v.form.Name }" />
     </b-form-group>
     <b-form-group label="Address">
       <b-form-input
-        v-model.trim="$v.form.address.$model"
-        :state="validateState('address')"
+        v-model.trim="$v.form.Address__c.$model"
+        :state="validateState('Address__c')"
         class="better-input"
-        @input="onUpdate"
       />
-      <validation-errors v-bind="{ id: 'address-input-feedback', validations: $v.form.address }" />
+      <validation-errors v-bind="{ id: 'address-input-feedback', validations: $v.form.Address__c }" />
     </b-form-group>
     <b-form-row>
       <b-form-group label="City" class="mr-2">
         <b-form-input
-          v-model="$v.form.city.$model"
-          :state="validateState('city')"
+          v-model="$v.form.City__c.$model"
+          :state="validateState('City__c')"
           class="better-input"
-          @input="onUpdate"
         />
-        <validation-errors v-bind="{ id: 'city-input-feedback', validations: $v.form.city }" />
+        <validation-errors v-bind="{ id: 'city-input-feedback', validations: $v.form.City__c }" />
       </b-form-group>
       <b-form-group label="State" class="mr-2">
         <b-form-select
-          v-model="$v.form.state.$model"
+          v-model="$v.form.State_Province__c.$model"
           :options="states"
-          :state="validateState('state')"
+          :state="validateState('State_Province__c')"
           class="better-input"
-          @input="onUpdate"
         />
       </b-form-group>
       <b-form-group label="Zip Code">
         <b-form-input
-          v-model="$v.form.zip.$model"
-          :state="validateState('zip')"
+          v-model="$v.form.Zip_Postal_Code__c.$model"
+          :state="validateState('Zip_Postal_Code__c')"
           type="number"
           class="better-input"
-          @input="onUpdate"
         />
-        <validation-errors v-bind="{ id: 'zip-feedback', validations: $v.form.zip }" />
+        <validation-errors v-bind="{ id: 'zip-feedback', validations: $v.form.Zip_Postal_Code__c }" />
       </b-form-group>
     </b-form-row>
     <b-form-row>
       <b-form-group label="Timezone" class="mr-2">
         <b-form-select
-          v-model="form.timezone"
+          v-model="$v.form.timezone.$model"
           :options="timezones"
+          :state="validateState('timezone')"
           class="better-input"
-          @input="onUpdate"
         />
+        <b-form-invalid-feedback id="timezone-feedback">
+          Please select a timezone.
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Call Tracking" class="mr-2">
         <b-form-select
-          v-model="form.callTracking"
+          v-model="$v.form.callTracking.$model"
           :options="callTrackings"
+          :state="validateState('callTracking')"
           class="better-input"
-          @input="onUpdate"
         />
+        <b-form-invalid-feedback id="call-tracking-feedback">
+          Please select a call tracking package.
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="DA Approved Budget" class="mr-5">
         <b-input-group prepend="$">
           <b-form-input
-            v-model="$v.form.budget.$model"
-            :state="validateState('budget')"
+            v-model="$v.form.Digital_Advertising_Budget__c.$model"
+            :state="validateState('Digital_Advertising_Budget__c')"
             type="number"
             class="better-input"
-            @input="onUpdate"
           />
-          <validation-errors v-bind="{ id: 'budget-feedback', validations: $v.form.budget }" />
+          <validation-errors v-bind="{ id: 'budget-feedback', validations: $v.form.Digital_Advertising_Budget__c }" />
         </b-input-group>
       </b-form-group>
-      <b-btn
-        :id="`drop-${i}-btn`"
-        variant="outline-tertiary"
-        class="align-self-center"
-        size="sm"
-        @click="onDrop"
-      >
-        <b-icon-trash />
-        Remove Location
-      </b-btn>
+      <b-btn-group size="sm" class="align-self-center">
+        <b-btn
+          :id="`approve-${i}-btn`"
+          :disabled="$v.form.$anyError"
+          variant="secondary"
+          class="px-5"
+          @click="onFinish"
+        >
+          Ready
+        </b-btn>
+        <b-btn
+          :id="`drop-${i}-btn`"
+          variant="outline-tertiary"
+          @click="onDrop"
+        >
+          <b-icon-trash />
+        </b-btn>
+      </b-btn-group>
     </b-form-row>
   </b-form>
 </template>
@@ -206,6 +214,10 @@ export default {
       ],
       timezones: [
         {
+          text: 'Select a timezone',
+          value: null
+        },
+        {
           text: 'Alaska Standard Time',
           value: 'Alaska'
         },
@@ -234,65 +246,66 @@ export default {
   },
   computed: {
     form() {
-      return {
-        name: this.location.Name,
-        address: this.location.Address__c,
-        city: this.location.City__c,
-        state: this.location.State_Province__c,
-        zip: this.location.Zip_Postal_Code__c,
-        budget: this.location.Digital_Advertising_Budget__c,
-        timezone: this.location.timezone,
-        callTracking: this.location.callTracking
-      }
+      return this.location
     }
   },
   validations: {
     form: {
-      name: {
+      Name: {
         required,
-        minLength: minLength(5),
         maxLength: maxLength(255)
       },
-      address: {
+      Address__c: {
         required,
-        minLength: minLength(5),
         maxLength: maxLength(255)
       },
-      city: {
+      City__c: {
         required,
-        minLength: minLength(3),
         maxLength: maxLength(255)
       },
-      state: {
+      State_Province__c: {
         required
       },
-      zip: {
+      Zip_Postal_Code__c: {
         required,
         numeric,
-        minLength: minLength(5)
+        minLength: minLength(5),
+        maxLength: maxLength(5)
       },
-      budget: {
+      Digital_Advertising_Budget__c: {
         required,
         minValue: minValue(0)
+      },
+      timezone: {
+        required
+      },
+      callTracking: {
+        required
       }
     }
   },
   mounted() {
     this.$v.$touch()
-    if (this.$v.form.$anyError) {
-      this.onUpdate()
-    }
   },
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.$v.form[name]
       return $dirty ? !$error : null
     },
-    onUpdate() {
-      this.$emit('update-location', {
+    onFinish() {
+      this.$emit('finish-location', {
         i: this.i,
-        location: this.form,
-        isError: this.$v.form.$anyError
+        location: this.form
+        // location: {
+        //   Name: this.form.name,
+        //   Digital_Advertising_Budget__c: this.form.budget,
+        //   Address__c: this.form.address,
+        //   City__c: this.form.city,
+        //   State_Province__c: this.form.state,
+        //   Zip_Postal_Code__c: this.form.zip,
+        //   timezone: this.form.timezone,
+        //   callTracking: this.form.callTracking
+        // }
       })
     },
     onDrop() {

@@ -4,7 +4,7 @@
       v-for="rule in rules"
       :key="rule"
     >
-      {{ validations[rule] }}
+      {{ validations[rule] ? '' : text(rule) }}
     </div>
   </b-form-invalid-feedback>
 </template>
@@ -33,22 +33,21 @@ export default {
     }
   },
   methods: {
-    traverseValidations(rule) {
-      switch (rule) {
-        case 'required':
-          return 'This field cannot be left blank.'
-        case 'minLength':
-          return 'This field value is too short.'
-        case 'minValue':
-          return 'This field value cannot be a negative value.'
-        case 'maxLength':
-          return 'This field value is too long.'
-        case 'maxValue':
-          return 'This field value is too large.'
-        case 'numeric':
-          return 'This field value must be a number.'
-        default:
-          return ''
+    text(rule) {
+      if (rule === 'required') {
+        return 'This field cannot be left blank.'
+      } else if (rule === 'minLength') {
+        return 'This field too short.'
+      } else if (rule === 'minValue') {
+        return 'This field value cannot be a negative value.'
+      } else if (rule === 'maxLength') {
+        return 'This field value is too long.'
+      } else if (rule === 'maxValue') {
+        return 'This field value is too large.'
+      } else if (rule === 'numeric') {
+        return 'This field value must be a number.'
+      } else {
+        return ''
       }
     }
   }
