@@ -1,5 +1,7 @@
 FROM node:latest
 
+ENV NPM_TOKEN=${NPM_TOKEN}
+
 RUN mkdir -p /usr/src/opex
 WORKDIR /usr/src/opex
 

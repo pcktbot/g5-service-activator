@@ -1,29 +1,15 @@
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: tylrhas/opex-template
-  tag: 1.1.4
+  repository: g5opex/g5-service-activator
+  tag: 1.0.0
   pullPolicy: IfNotPresent
   resources:
     requests:
       cpu: 200m
       memory: 300Mi
   readinessProbe: {}
-  # readinessProbe:
-  #   httpGet:
-  #     path: /ready
-  #     port: 8080
-  #   initialDelaySeconds: 3
-  #   periodSeconds: 5
   livenessProbe: {}
-  # livenessProbe:
-  #   httpGet:
-  #     path: /live
-  #     port: 8080
-  #   initialDelaySeconds: 40
-  #   periodSeconds: 10
 service:
   name: Node
   type: NodePort
@@ -47,4 +33,3 @@ base:
 istio:
   enabled: false
   weight: 100
-
