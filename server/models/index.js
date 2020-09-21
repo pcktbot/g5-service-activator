@@ -23,7 +23,7 @@ const maxTest = parseInt(max)
 const idleTest = parseInt(idle)
 const acquireTest = parseInt(acquire)
 const evictTest = parseInt(evict)
-console.log({ dbUrl, ssl })
+console.log({ dbUrl, ssl, max, min, idle, acquire, evict, logging, ca, cert, key })
 const sequelize = new Sequelize(dbUrl, {
   pool: {
     max: maxTest,
