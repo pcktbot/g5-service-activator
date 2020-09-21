@@ -7,6 +7,7 @@ const app = express()
 app.use(bodyParser.json({ limit: '1000kb' }))
 app.use((req, res, next) => {
   console.log(req.path)
+  next()
 })
 const models = require('./models')
 const config = require('../nuxt.config.js')
