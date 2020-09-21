@@ -32,6 +32,7 @@ async function start () {
     console.log('here')
     console.log(models.sequelize.sync)
     await models.sequelize.sync()
+    console.log('here 2')
     app.listen(port, host)
     console.log({ message: `Server listening on http://${host}:${port}`})
   } catch (error) {
