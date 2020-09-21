@@ -10,6 +10,7 @@ app.use((req, res, next) => {
   next()
 })
 const models = require('./models')
+console.log({ models })
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 require('./routes')(app)
@@ -31,11 +32,11 @@ async function start () {
   models.sequelize
     .sync()
     .then(() => {
+      app.listen(port, host)
+      consola.ready({
+        message: `Server listening on http://${host}:${port}`,
+        badge: true
+      })
     })
-  app.listen(port, host)
-  consola.ready({
-    message: `Server listening on http://${host}:${port}`,
-    badge: true
-  })
 }
 start()
