@@ -5,6 +5,9 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 app.use(bodyParser.json({ limit: '1000kb' }))
+app.use((req, res, next) => {
+  console.log(req.path)
+})
 const models = require('./models')
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
