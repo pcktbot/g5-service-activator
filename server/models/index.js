@@ -3,8 +3,8 @@ const path = require('path')
 const Sequelize = require('sequelize')
 
 const {
-  // INCLUDE_G5_AUTH: includeAuth,
-  // INCLUDE_G5_UPDATABLES: includeUpdatables,
+  INCLUDE_G5_AUTH: includeAuth,
+  INCLUDE_G5_UPDATABLES: includeUpdatables,
   DATABASE_URL: dbUrl,
   DATABASE_MAX_CONNECTIONS: max,
   DATABASE_MIN_CONNECTIONS: min,
@@ -23,7 +23,7 @@ const maxTest = parseInt(max)
 const idleTest = parseInt(idle)
 const acquireTest = parseInt(acquire)
 const evictTest = parseInt(evict)
-console.log({ dbUrl, ssl, max, min, idle, acquire, evict, logging, ca, cert, key })
+
 const sequelize = new Sequelize(dbUrl, {
   pool: {
     max: maxTest,
@@ -39,11 +39,13 @@ const sequelize = new Sequelize(dbUrl, {
 })
 
 // NOT SURE THIS WILL WORK, BUT IT SEEMS LIKE WE WOULD WANT TO OPTIONALIZE THESE
-const db = {
-  // ...includeAuth ? require('@getg5/g5-auth').models(sequelize) : {},
-  // ...includeUpdatables ? require('@getg5/g5-updatable').models(sequelize) : {}
-}
-
+// const db = {
+//   ...includeAuth ? require('@getg5/g5-auth').models(sequelize) : {},
+//   ...includeUpdatables ? require('@getg5/g5-updatable').models(sequelize) : {}
+// }
+// const updatableModels = require('@getg5/g5-updatable').models(sequelize)
+// const authModels = require('@getg5/g5-auth').models(sequelize)
+const db = {}
 // db.user.associate = (models) => {
 //   models.user.hasMany(models.seoAssignment, { foreignKey: 'userId', sourceKey: 'id' })
 // }

@@ -29,6 +29,8 @@ async function start () {
 
   app.use(nuxt.render)
   try {
+    console.log('here')
+    console.log(models.sequelize.sync)
     await models.sequelize.sync()
     app.listen(port, host)
     console.log({ message: `Server listening on http://${host}:${port}`})
