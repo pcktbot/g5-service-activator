@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
-    "docker:build": "docker build -t service-activator . --build-arg NPM_TOKEN=${NPM_TOKEN}",
-    "helm:upgrade": "helm upgrade ./chart/nuxt",
+    "docker:build": "docker build -t service-activator .",
+    "helm:upgrade": "helm upgrade service-activator ./chart/nuxt",
     "build": "nuxt build",
     "analyze": "nuxt build --analyze",
     "start": "cross-env NODE_ENV=production node server/index.js",

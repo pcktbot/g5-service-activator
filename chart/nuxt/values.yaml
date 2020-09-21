@@ -2,7 +2,7 @@ replicaCount: 1
 revisionHistoryLimit: 1
 image:
   repository: g5opex/g5-service-activator
-  tag: 1.0.1
+  tag: 1.0.6
   pullPolicy: IfNotPresent
   resources:
     requests:

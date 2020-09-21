@@ -39,6 +39,10 @@ spec:
             value: "10"
           - name: DATABASE_MIN_CONNECTIONS
             value: "0"
+          - name: GKE
+            value: "true"
+          - name: DATABASE_LOGGING
+            value: "true"
           - name: DATABASE_IDLE
             value: "1000"
           - name: DATABASE_AQUIRE
