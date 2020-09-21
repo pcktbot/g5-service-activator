@@ -33,10 +33,7 @@ async function start () {
     .sync()
     .then(() => {
       app.listen(port, host)
-      consola.ready({
-        message: `Server listening on http://${host}:${port}`,
-        badge: true
-      })
+      console.log({ message: `Server listening on http://${host}:${port}`})
     })
 }
 start()
