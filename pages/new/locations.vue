@@ -175,6 +175,6 @@ $blue: #314e8b;
 .multiselect__option--selected.multiselect__option--highlight:after,
 .multiselect__option--group-selected.multiselect__option--highlight,
 .multiselect__option--group-selected.multiselect__option--highlight:after {
-  background:$blue;
+  background: $blue;
 }
 </style>

@@ -1,11 +1,9 @@
 FROM node:latest
 
-# ARG NPM_TOKEN
+ENV BROWSER_URL=activator.ml
 
 RUN mkdir -p /usr/src/opex
 WORKDIR /usr/src/opex
-
-ENV BROWSER_URL=activator.ml
 
 COPY . /usr/src/opex
 RUN npm install
